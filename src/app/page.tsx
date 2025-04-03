@@ -103,7 +103,7 @@ export default function Home() {
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <div className="bg-black flex items-center justify-center rounded w-8 h-8">
-              <div className="w-4 h-0.5 bg-white rotate-45" />
+              ε
             </div>
             <span className="logo font-medium">Epsilon</span>
           </div>

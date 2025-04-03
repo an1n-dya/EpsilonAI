@@ -13,7 +13,7 @@ interface ChatInputProps {
 
 export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [input, setInput] = useState("");
-  const [model, setModel] = useState("Epsilon 3");
+  const [model, setModel] = useState("Epsilon E3");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

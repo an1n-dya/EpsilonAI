@@ -60,8 +60,9 @@ export default function ForgotPasswordPage() {
         <div className="space-y-4 text-center">
           <div className="flex justify-center">
             <div className="rounded-full bg-secondary p-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground">
-                <polyline points="20 6 9 17 4 12"></polyline>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+                <circle cx="20" cy="20" r="20" fill="#000000"/>
+                <path d="M27 12c-1.5 0-3.5 0.2-5.5 0.6-2 0.4-3.7 1-5 1.8-1.2 0.8-1.8 1.6-1.8 2.6 0 0.7 0.3 1.4 1 2 0.7 0.6 1.6 1 2.6 1.2-1.3 0.3-2.3 0.8-3 1.4-0.7 0.6-1 1.4-1 2.4 0 1 0.6 1.9 1.9 2.7 1.3 0.8 2.9 1.4 5 1.8 2 0.4 4 0.6 5.8 0.6 1 0 1.9-0.1 2.7-0.2l0.3-2.4c-0.8 0.1-1.6 0.1-2.5 0.1-1.6 0-3.2-0.2-4.8-0.5-1.6-0.3-2.9-0.8-3.8-1.3-0.9-0.5-1.4-1.1-1.4-1.7 0-0.5 0.3-0.9 1-1.3 0.7-0.4 1.6-0.7 2.7-0.9 1.1-0.2 2.3-0.3 3.5-0.3h3.8v-2h-3.8c-1.4 0-2.8-0.1-4-0.4-1.2-0.3-2.2-0.6-2.9-1.1-0.7-0.4-1-0.9-1-1.4 0-0.6 0.5-1.1 1.4-1.6 0.9-0.5 2.1-0.9 3.6-1.2 1.5-0.3 3-0.4 4.6-0.4 1.1 0 2.1 0.1 3 0.2L29 10c-0.6-0.1-1.3-0.1-2-0.1z" fill="white"/>
               </svg>
             </div>
           </div>

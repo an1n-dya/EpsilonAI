@@ -34,7 +34,7 @@ export function ChatInterface() {
       const aiMessage: Message = {
         id: `assistant-${Date.now()}`,
         role: "assistant",
-        content: "I'm a simulated Epsilon AI response. In a real implementation, I would be powered by xAI's Epsilon model."
+        content: "I'm a simulated Epsilon AI response. In a real implementation, I would be powered by an Epsilon model."
       };
 
       setMessages((prev) => [...prev, aiMessage]);

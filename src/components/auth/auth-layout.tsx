@@ -22,7 +22,7 @@ export function AuthLayout({
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Link href="/" className="flex items-center gap-2 mb-8">
         <div className="bg-black flex items-center justify-center rounded w-8 h-8">
-          <div className="w-4 h-0.5 bg-white rotate-45" />
+          ε
         </div>
         <span className="logo font-medium">Epsilon</span>
       </Link>

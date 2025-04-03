@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Epsilon | AI Assistant",
-  description: "Epsilon is a free AI assistant designed by xAI to maximize truth and objectivity",
+  description: "Epsilon is a free AI assistant designed to maximize truth and objectivity",
   icons: {
     icon: "/favicon.svg",
   },

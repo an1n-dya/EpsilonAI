@@ -15,8 +15,8 @@ export default function AboutPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-6">
             <p>
               Epsilon is an AI assistant designed for truth and objectivity. 
-              Developed by xAI, Epsilon represents a milestone in the journey toward 
-              AI systems that can reason accurately and provide reliable information.
+              Epsilon represents a milestone in the journey toward AI systems
+              that can reason accurately and provide reliable information.
             </p>
             
             <h2 className="text-2xl font-semibold mt-8">Our mission</h2>
@@ -79,16 +79,6 @@ export default function AboutPage() {
                   Try Epsilon <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full text-base font-medium px-8"
-                asChild
-              >
-                <a href="#" target="_blank" rel="noopener noreferrer">
-                  Learn more about xAI <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
             </div>
           </div>
         </div>
@@ -98,7 +88,7 @@ export default function AboutPage() {
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <div className="bg-black flex items-center justify-center rounded w-8 h-8">
-              <div className="w-4 h-0.5 bg-white rotate-45" />
+              ε
             </div>
             <span className="logo font-medium">Epsilon</span>
           </div>

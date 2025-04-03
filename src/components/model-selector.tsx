@@ -10,9 +10,9 @@ interface ModelSelectorProps {
 
 export function ModelSelector({ onModelChange }: ModelSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("Epsilon 3");
+  const [selectedModel, setSelectedModel] = useState("Epsilon E3");
 
-  const models = ["Epsilon 1", "Epsilon 2", "Epsilon 3"];
+  const models = ["Epsilon E1", "Epsilon E2", "Epsilon E3"];
 
   const handleSelect = (model: string) => {
     setSelectedModel(model);
