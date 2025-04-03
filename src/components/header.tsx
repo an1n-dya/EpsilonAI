@@ -21,14 +21,16 @@ export function Header() {
             variant="ghost"
             size="sm"
             className="text-sm text-muted-foreground"
+            asChild
           >
-            Sign in
+            <Link href="/login">Sign in</Link>
           </Button>
           <Button
             size="sm"
             className="bg-white text-black hover:bg-white/90 rounded-full font-medium text-sm"
+            asChild
           >
-            Sign up
+            <Link href="/signup">Sign up</Link>
           </Button>
         </div>
       </div>
