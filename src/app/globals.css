@@ -27,25 +27,26 @@
   }
 
   .dark {
-    --background: 220 15% 12%;
-    --foreground: 0 0% 98%;
-    --card: 220 15% 15%;
-    --card-foreground: 0 0% 98%;
-    --popover: 220 12% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 220 13% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 220 13% 18%;
-    --muted-foreground: 220 5% 70%;
-    --accent: 220 13% 18%;
-    --accent-foreground: 0 0% 98%;
+    /* More vibrant dark theme with blue-purple accents */
+    --background: 222 25% 10%;
+    --foreground: 210 40% 98%;
+    --card: 222 25% 14%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 25% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 100% 65%;
+    --primary-foreground: 222 25% 12%;
+    --secondary: 222 25% 16%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 25% 16%;
+    --muted-foreground: 210 20% 75%;
+    --accent: 250 40% 50%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
-    --ring: 220 4.9% 83.9%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 222 25% 20%;
+    --input: 222 25% 18%;
+    --ring: 210 40% 65%;
   }
 }
 
@@ -56,28 +57,161 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: radial-gradient(
+      circle at 120% 90%,
+      hsl(var(--accent) / 0.1) 0%,
+      transparent 70%
+    );
   }
 }
 
 @layer components {
   .chat-input {
-    @apply w-full rounded-full px-6 py-3 bg-muted text-primary-foreground focus:outline-none focus:ring-1 focus:ring-primary/50;
+    @apply w-full rounded-full px-6 py-3 bg-muted text-primary-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 border border-transparent focus:border-primary/20 shadow-lg;
+    transition: transform 0.2s ease;
+  }
+
+  .chat-input:focus {
+    transform: translateY(-2px);
   }
 
   .tool-button {
-    @apply rounded-full px-5 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-secondary/70;
+    @apply rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-secondary/70 hover:shadow-md hover:-translate-y-1;
   }
 
   .logo {
-    @apply font-semibold text-2xl;
+    @apply font-bold text-2xl relative;
+    text-shadow: 0 0 30px hsl(var(--accent) / 0.3);
+  }
+  
+  .logo-container {
+    position: relative;
+  }
+  
+  .logo-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, hsl(var(--accent) / 0.2) 0%, transparent 50%);
+    filter: blur(10px);
+    z-index: -1;
+  }
+
+  /* Glow effect for card hover */
+  .glow-card {
+    @apply transition-all duration-300 hover:shadow-xl relative overflow-hidden;
+  }
+  
+  .glow-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, hsl(var(--accent) / 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .glow-card:hover::before {
+    opacity: 1;
   }
 
   /* Chat messages styling */
   .message-bubble-user {
-    @apply bg-secondary text-secondary-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] ml-auto shadow-sm border border-gray-700/20;
+    @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] ml-auto shadow-md border border-primary/20 transition-all duration-200;
+    animation: slideInRight 0.3s ease-out;
   }
 
   .message-bubble-assistant {
-    @apply bg-muted text-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] shadow-sm border border-gray-700/10;
+    @apply bg-card text-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] shadow-md border border-border transition-all duration-200;
+    animation: slideInLeft 0.3s ease-out;
+  }
+
+  /* Animations */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s infinite ease-in-out;
+  }
+
+  /* Hero section gradient */
+  .hero-gradient {
+    background-image: 
+      radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, hsl(var(--primary) / 0.1) 0%, transparent 50%);
+  }
+
+  /* Glowing button */
+  .glow-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .glow-button::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, hsl(var(--accent) / 0.4) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease-out;
+    z-index: -1;
+  }
+
+  .glow-button:hover::after {
+    transform: scale(1);
   }
 }
