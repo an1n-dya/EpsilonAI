@@ -26,25 +26,28 @@ export default function AboutPage() {
               believe AI should be a reliable tool for enhancing human knowledge 
               and decision-making.
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
               <ValueCard 
                 icon={<Lightbulb />}
                 title="Truth"
                 description="We prioritize factual accuracy and clear reasoning in all interactions."
+                index={0}
               />
               <ValueCard 
                 icon={<Shield />}
                 title="Objectivity"
                 description="We strive to minimize bias and present balanced perspectives."
+                index={1}
               />
               <ValueCard 
                 icon={<Activity />}
                 title="Utility"
                 description="We build technology that genuinely helps people achieve their goals."
+                index={2}
               />
             </div>
-            
+
             <h2 className="text-2xl font-semibold mt-8">How Epsilon works</h2>
             <p>
               Epsilon is powered by a large language model trained on diverse datasets 
@@ -110,10 +113,20 @@ interface ValueCardProps {
   description: string;
 }
 
-function ValueCard({ icon, title, description }: ValueCardProps) {
+function ValueCard({ icon, title, description, index = 0 }: ValueCardProps & { index?: number }) {
+  // Array of frost card classes to cycle through
+  const frostClasses = [
+    "card-frost-blue",
+    "card-frost-purple", 
+    "card-frost-teal"
+  ];
+  
+  // Select a class based on the index
+  const cardClass = frostClasses[index % frostClasses.length];
+  
   return (
-    <div className="flex flex-col items-center text-center p-6 bg-card border border-border/50 rounded-xl shadow-sm">
-      <div className="bg-secondary h-12 w-12 rounded-full flex items-center justify-center mb-4">
+    <div className={`flex flex-col items-center text-center p-6 ${cardClass} rounded-xl shadow-sm backdrop-blur-md`}>
+      <div className="bg-white/60 backdrop-blur-sm h-12 w-12 rounded-full flex items-center justify-center mb-4 shadow-sm">
         {icon}
       </div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>

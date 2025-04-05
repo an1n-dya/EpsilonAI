@@ -24,10 +24,10 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full border-b transition-all duration-300 backdrop-blur-md",
         scrolled 
-          ? "border-border/50 bg-background/90 shadow-lg" 
-          : "border-transparent bg-background/50"
-      )}
-    >
+          ? "border-blue-100 bg-white/80 shadow-lg" 
+          : "border-transparent bg-white/50"
+        )}
+      >
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 logo-container">

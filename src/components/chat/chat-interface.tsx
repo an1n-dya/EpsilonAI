@@ -74,9 +74,9 @@ export function ChatInterface() {
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden relative">
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full filter blur-[100px]"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-accent/20 rounded-full filter blur-[100px]"></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-30">
+          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-blue-200/50 rounded-full filter blur-[100px]"></div>
+          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-indigo-200/50 rounded-full filter blur-[100px]"></div>
         </div>
       </div>
       

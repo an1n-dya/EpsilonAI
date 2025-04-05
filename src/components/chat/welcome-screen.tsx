@@ -15,9 +15,9 @@ export function WelcomeScreen() {
     <div className="flex flex-col items-center justify-center h-full space-y-8 text-center px-4">
       {/* Animated gradient background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-30">
-          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-primary/20 rounded-full filter blur-[100px] animate-pulse-slow"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-accent/20 rounded-full filter blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }}></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-40">
+          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-blue-200/50 rounded-full filter blur-[100px] animate-pulse-slow"></div>
+          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-indigo-200/50 rounded-full filter blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }}></div>
         </div>
       </div>
       
@@ -72,7 +72,7 @@ function ToolButton({ icon, label, delay }: ToolButtonProps) {
   return (
     <Button 
       variant="outline" 
-      className={`tool-button flex flex-row items-center justify-center h-12 gap-2 border-border/50 w-full bg-card/50 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+      className={`tool-button flex flex-row items-center justify-center h-12 gap-2 border-blue-100/50 w-full bg-white/60 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
       style={{ transitionDelay: `${delay}s` }}
     >
       <span className="text-accent">{icon}</span>

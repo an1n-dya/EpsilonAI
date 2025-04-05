@@ -7,10 +7,10 @@ export default function ClientBody({
 }: {
   children: React.ReactNode;
 }) {
-  // Set dark mode and remove any extension-added classes during hydration
+  // Enable light theme and remove any extension-added classes during hydration
   useEffect(() => {
     // This runs only on the client after hydration
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add('dark'); // We're keeping 'dark' class but changing the variables to light colors
     document.body.className = "antialiased";
   }, []);
 
