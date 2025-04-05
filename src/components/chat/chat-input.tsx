@@ -61,7 +61,12 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
             <Mic className="h-4 w-4" />
           </Button>
         </div>
-        <ModelSelector onModelChange={handleModelChange} />
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-foreground logo">
+            <span className="text-xs">Powered by</span> Epsilon
+          </span>
+          <ModelSelector onModelChange={handleModelChange} />
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="relative flex items-center group">
@@ -80,7 +85,7 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
           onChange={(e) => setInput(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="chat-input pr-12 z-10"
+          className="chat-input pr-12 z-10 text-foreground"
           disabled={isLoading}
         />
         

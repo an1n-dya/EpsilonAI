@@ -12,7 +12,7 @@ export default function Home() {
       <section className="py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-            Meet Epsilon, your AI assistant
+            Meet <span className="logo text-6xl md:text-7xl">Epsilon</span>, your AI assistant
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground">
             Built for maximizing truth and objectivity
@@ -42,7 +42,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-blue-50/70 backdrop-blur-sm">
+      <section className="py-16 px-4 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Key features</h2>
           
@@ -51,37 +51,31 @@ export default function Home() {
               icon={<Sparkles />}
               title="Advanced reasoning"
               description="Epsilon processes information with critical thinking to reach accurate and logical conclusions."
-              index={0}
             />
             <FeatureCard 
               icon={<Shield />}
               title="Objective and truthful"
               description="Designed to maximize factual accuracy and minimize bias in all responses."
-              index={1}
             />
             <FeatureCard 
               icon={<Zap />}
               title="Fast and responsive"
               description="Get clear, concise answers to your questions without unnecessary delay."
-              index={2}
             />
             <FeatureCard 
               icon={<Code />}
               title="Coding assistance"
               description="Help with programming tasks across multiple languages with detailed explanations."
-              index={3}
             />
             <FeatureCard 
               icon={<Users />}
               title="Research collaborator"
               description="Assist with research by analyzing data, generating insights, and suggesting approaches."
-              index={4}
             />
             <FeatureCard 
               icon={<ArrowRight />}
               title="Continuous learning"
               description="Epsilon is constantly improving to provide better, more accurate responses."
-              index={5}
             />
           </div>
         </div>
@@ -91,7 +85,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join thousands of users already enhancing their productivity with Epsilon
+             Join thousands of users already enhancing their productivity with <span className="logo text-2xl md:text-3xl font-semibold">Epsilon</span>
           </p>
           <Button 
             size="lg" 
@@ -109,7 +103,7 @@ export default function Home() {
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <div className="bg-black flex items-center justify-center rounded w-8 h-8">
-              ε
+              <span className="epsilon-symbol text-lg">ε</span>
             </div>
             <span className="logo font-medium">Epsilon</span>
           </div>
@@ -131,23 +125,10 @@ interface FeatureCardProps {
   description: string;
 }
 
-function FeatureCard({ icon, title, description, index = 0 }: FeatureCardProps & { index?: number }) {
-  // Array of frost card classes to cycle through
-  const frostClasses = [
-    "card-frost-blue",
-    "card-frost-purple", 
-    "card-frost-teal",
-    "card-frost-indigo",
-    "card-frost-sky",
-    "card-frost-pink"
-  ];
-  
-  // Select a class based on the index or random if not provided
-  const cardClass = frostClasses[index % frostClasses.length];
-  
+function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <div className={`flex flex-col p-6 ${cardClass} rounded-xl shadow-sm backdrop-blur-md`}>
-      <div className="bg-white/60 backdrop-blur-sm h-12 w-12 rounded-lg flex items-center justify-center mb-4 shadow-sm">
+    <div className="flex flex-col p-6 bg-card border border-border/50 rounded-xl shadow-sm glow-card">
+      <div className="bg-secondary h-12 w-12 rounded-lg flex items-center justify-center mb-4">
         {icon}
       </div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
