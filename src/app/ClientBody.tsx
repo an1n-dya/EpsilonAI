@@ -12,6 +12,8 @@ export default function ClientBody({
   useEffect(() => {
     // This runs only on the client after hydration
     document.body.className = "antialiased";
+    
+    document.body.style.transition = "background-color 0.3s ease-in-out, color 0.3s ease-in-out";
   }, []);
 
   return (

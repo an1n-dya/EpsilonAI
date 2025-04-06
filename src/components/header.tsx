@@ -25,15 +25,15 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full border-b transition-all duration-300 backdrop-blur-md",
         scrolled 
-          ? "border-blue-100 dark:border-blue-900/30 bg-white/80 dark:bg-background/80 shadow-lg" 
-          : "border-transparent bg-white/50 dark:bg-background/50"
+          ? "border-blue-100 dark:border-blue-900/40 bg-white/80 dark:bg-background/90 shadow-lg" 
+          : "border-transparent bg-white/50 dark:bg-background/80"
         )}
       >
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 logo-container">
-            <div className="bg-black dark:bg-white flex items-center justify-center rounded-lg w-8 h-8 overflow-hidden relative">
-              <span className="text-white dark:text-black font-bold text-xl animate-pulse-slow">ε</span>
+            <div className="bg-black dark:bg-background flex items-center justify-center rounded-lg w-8 h-8 overflow-hidden relative">
+              <span className="text-white dark:text-white font-bold text-xl animate-pulse-slow">ε</span>
               <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 opacity-60"></div>
             </div>
             <span className="logo font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-accent">Epsilon</span>
@@ -76,7 +76,7 @@ export function Header() {
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
-            className="text-muted-foreground"
+            className="text-foreground"  /* Changed from muted-foreground for better visibility */
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </Button>
@@ -94,13 +94,13 @@ export function Header() {
             <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
               <Button
                 variant="ghost"
-                className="w-full justify-center text-muted-foreground"
+                className="w-full justify-center text-foreground hover:bg-secondary/60"  /* Changed from muted-foreground for better visibility */
                 asChild
               >
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign in</Link>
               </Button>
               <Button
-                className="w-full justify-center bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-full"
+                className="w-full justify-center bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-full shadow-md"
                 asChild
               >
                 <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign up</Link>

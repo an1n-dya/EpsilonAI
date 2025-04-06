@@ -39,32 +39,31 @@
 
   .dark {
     /* Dark theme colors */
-    --background: 220 20% 12%;
+    --background: 220 20% 10%;
     --foreground: 210 20% 98%;
     
     /* UI element colors */
-    --card: 220 20% 16%;
-    --card-foreground: 210 20% 96%;
+    --card: 220 20% 14%;
+    --card-foreground: 210 20% 98%; 
     --popover: 220 20% 16%;
     --popover-foreground: 210 20% 96%;
     
     /* Brand colors */
-    --primary: 210 100% 60%;
+    --primary: 210 100% 65%;
     --primary-foreground: 210 20% 98%;
-    --secondary: 215 25% 20%;
-    --secondary-foreground: 210 20% 96%;
-    --accent: 250 80% 67%;
+    --secondary: 215 25% 18%;
+    --accent: 250 80% 72%;
     --accent-foreground: 210 20% 98%;
     
     /* Functional colors */
     --muted: 215 25% 20%;
-    --muted-foreground: 210 20% 70%;
+    --muted-foreground: 210 20% 75%;
     --destructive: 0 62.8% 60.6%;
     --destructive-foreground: 210 20% 98%;
     
     /* Border and control colors */
-    --border: 215 25% 25%;
-    --input: 215 25% 25%;
+    --border: 215 25% 22%;
+    --input: 215 25% 22%;
     --ring: 210 100% 60%;
   }
 }
