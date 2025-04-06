@@ -12,7 +12,7 @@ export default function Home() {
       <section className="py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-            Meet Epsilon, your AI assistant
+            Meet <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Epsilon</span>, your AI assistant
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground">
             Built for maximizing truth and objectivity
@@ -108,10 +108,10 @@ export default function Home() {
       <footer className="border-t border-border/50 py-8 px-4">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <div className="bg-black flex items-center justify-center rounded w-8 h-8">
+            <div className="bg-gradient-to-r from-primary to-accent flex items-center justify-center rounded w-8 h-8 text-white">
               ε
             </div>
-            <span className="logo font-medium">Epsilon</span>
+            <span className="logo font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Epsilon</span>
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <Link href="/about" className="hover:text-foreground">About</Link>

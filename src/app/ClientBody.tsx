@@ -10,7 +10,7 @@ export default function ClientBody({
   // Enable light theme and remove any extension-added classes during hydration
   useEffect(() => {
     // This runs only on the client after hydration
-    document.documentElement.classList.add('dark'); // We're keeping 'dark' class but changing the variables to light colors
+    document.documentElement.classList.add('dark'); // Apply the dark theme class but with light colors
     document.body.className = "antialiased";
   }, []);
 

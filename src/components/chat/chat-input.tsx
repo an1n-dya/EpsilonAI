@@ -80,7 +80,7 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
           onChange={(e) => setInput(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="chat-input pr-12 z-10"
+          className="chat-input pr-12 z-10 placeholder:text-muted-foreground/70"
           disabled={isLoading}
         />
         
@@ -100,11 +100,6 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
             input.trim() ? <Send className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />
           )}
         </Button>
-        
-        {/* Keyboard shortcut hint */}
-        <div className="absolute right-14 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground hidden sm:block">
-          Press / to focus
-        </div>
       </form>
     </div>
   );

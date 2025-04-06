@@ -68,31 +68,31 @@
 @layer components {
   /* Card variations with frosted glass effect */
   .card-frost-blue {
-    @apply bg-blue-100/70 backdrop-blur-md border-blue-200/50;
+    @apply bg-blue-100/80 backdrop-blur-md border-blue-200/60;
   }
   
   .card-frost-purple {
-    @apply bg-purple-100/70 backdrop-blur-md border-purple-200/50;
+    @apply bg-purple-100/80 backdrop-blur-md border-purple-200/60;
   }
   
   .card-frost-teal {
-    @apply bg-teal-100/70 backdrop-blur-md border-teal-200/50;
+    @apply bg-teal-100/80 backdrop-blur-md border-teal-200/60;
   }
   
   .card-frost-indigo {
-    @apply bg-indigo-100/70 backdrop-blur-md border-indigo-200/50;
+    @apply bg-indigo-100/80 backdrop-blur-md border-indigo-200/60;
   }
   
   .card-frost-sky {
-    @apply bg-sky-100/70 backdrop-blur-md border-sky-200/50;
+    @apply bg-sky-100/80 backdrop-blur-md border-sky-200/60;
   }
   
   .card-frost-pink {
-    @apply bg-pink-100/70 backdrop-blur-md border-pink-200/50;
+    @apply bg-pink-100/80 backdrop-blur-md border-pink-200/60;
   }
 
   .chat-input {
-    @apply w-full rounded-full px-6 py-3 bg-white/80 backdrop-blur-sm text-primary-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 border border-transparent focus:border-primary/20 shadow-lg;
+    @apply w-full rounded-full px-6 py-3 bg-white/80 backdrop-blur-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 border border-transparent focus:border-primary/20 shadow-lg;
     transition: transform 0.2s ease;
   }
 
@@ -145,12 +145,12 @@
 
   /* Chat messages styling */
   .message-bubble-user {
-    @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] ml-auto shadow-md border border-primary/20 transition-all duration-200;
+    @apply bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] ml-auto shadow-md border border-primary/20 transition-all duration-200;
     animation: slideInRight 0.3s ease-out;
   }
 
   .message-bubble-assistant {
-    @apply bg-white/80 backdrop-blur-sm text-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] shadow-md border border-border transition-all duration-200;
+    @apply bg-white/90 backdrop-blur-sm text-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] shadow-md border border-border transition-all duration-200;
     animation: slideInLeft 0.3s ease-out;
   }
 

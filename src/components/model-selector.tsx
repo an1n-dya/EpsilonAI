@@ -33,7 +33,7 @@ export function ModelSelector({ onModelChange }: ModelSelectorProps) {
       </Button>
 
       {isOpen && (
-        <div className="absolute bottom-full mb-2 w-32 rounded-md bg-card shadow-lg border border-border z-10">
+        <div className="absolute bottom-full mb-2 w-32 rounded-md bg-card/95 backdrop-blur-sm shadow-lg border border-border z-10">
           <div className="py-1">
             {models.map((model) => (
               <button
@@ -41,7 +41,7 @@ export function ModelSelector({ onModelChange }: ModelSelectorProps) {
                 onClick={() => handleSelect(model)}
                 className={`w-full text-left px-4 py-2 text-sm ${
                   model === selectedModel
-                    ? "bg-secondary text-secondary-foreground"
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-secondary/50"
                 }`}
               >

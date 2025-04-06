@@ -21,10 +21,10 @@ export function AuthLayout({
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <Link href="/" className="flex items-center gap-2 mb-8">
-        <div className="bg-black flex items-center justify-center rounded w-8 h-8">
+        <div className="bg-gradient-to-r from-primary to-accent flex items-center justify-center rounded w-8 h-8 text-white">
           ε
         </div>
-        <span className="logo font-medium">Epsilon</span>
+        <span className="logo font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Epsilon</span>
       </Link>
 
       <div className="w-full max-w-md space-y-6">

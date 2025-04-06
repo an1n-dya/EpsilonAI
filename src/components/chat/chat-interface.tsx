@@ -80,7 +80,7 @@ export function ChatInterface() {
         </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4 pb-0 scrollbar-thin scrollbar-thumb-accent/20 scrollbar-track-transparent">
+      <div className="flex-1 overflow-y-auto p-4 pb-0 scrollbar-thin scrollbar-thumb-accent/30 scrollbar-track-transparent">
         {messages.length === 0 ? (
           <WelcomeScreen />
         ) : (

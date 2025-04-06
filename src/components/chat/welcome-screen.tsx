@@ -26,7 +26,7 @@ export function WelcomeScreen() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full animate-pulse-slow"></div>
           <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">ε</div>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-accent to-primary">Welcome to Epsilon.</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Epsilon</span>.</h1>
         <p className="text-xl text-muted-foreground">How can I help you today?</p>
       </div>
 
@@ -72,7 +72,7 @@ function ToolButton({ icon, label, delay }: ToolButtonProps) {
   return (
     <Button 
       variant="outline" 
-      className={`tool-button flex flex-row items-center justify-center h-12 gap-2 border-blue-100/50 w-full bg-white/60 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+      className="tool-button flex flex-row items-center justify-center h-12 gap-2 border-blue-100/50 w-full bg-white/70 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700"
       style={{ transitionDelay: `${delay}s` }}
     >
       <span className="text-accent">{icon}</span>

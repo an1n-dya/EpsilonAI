@@ -90,7 +90,7 @@ export default function AboutPage() {
       <footer className="border-t border-border/50 py-8 px-4 mt-auto">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <div className="bg-black flex items-center justify-center rounded w-8 h-8">
+            <div className="bg-gradient-to-r from-primary to-accent flex items-center justify-center rounded w-8 h-8 text-white">
               ε
             </div>
             <span className="logo font-medium">Epsilon</span>
