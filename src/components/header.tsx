@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,15 +25,15 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full border-b transition-all duration-300 backdrop-blur-md",
         scrolled 
-          ? "border-blue-100 bg-white/80 shadow-lg" 
-          : "border-transparent bg-white/50"
+          ? "border-blue-100 dark:border-blue-900/30 bg-white/80 dark:bg-background/80 shadow-lg" 
+          : "border-transparent bg-white/50 dark:bg-background/50"
         )}
       >
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 logo-container">
-            <div className="bg-black flex items-center justify-center rounded-lg w-8 h-8 overflow-hidden relative">
-              <span className="text-white font-bold text-xl animate-pulse-slow">ε</span>
+            <div className="bg-black dark:bg-white flex items-center justify-center rounded-lg w-8 h-8 overflow-hidden relative">
+              <span className="text-white dark:text-black font-bold text-xl animate-pulse-slow">ε</span>
               <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 opacity-60"></div>
             </div>
             <span className="logo font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-accent">Epsilon</span>
@@ -46,6 +47,8 @@ export function Header() {
           <NavLink href="/blog">Blog</NavLink>
           
           <div className="flex items-center gap-2 ml-4">
+            <ThemeToggle />
+            
             <Button
               variant="ghost"
               size="sm"
@@ -65,7 +68,9 @@ export function Header() {
         </div>
         
         {/* Mobile menu button */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          
           <Button
             variant="ghost"
             size="icon"

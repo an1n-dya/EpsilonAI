@@ -38,34 +38,33 @@
   }
 
   .dark {
-    /* Lighter blue theme */
-    /* Main colors */
-    --background: 210 50% 98%;
-    --foreground: 222 25% 25%;
+    /* Dark theme colors */
+    --background: 220 20% 12%;
+    --foreground: 210 20% 98%;
     
     /* UI element colors */
-    --card: 206 70% 98%;
-    --card-foreground: 222 25% 20%;
-    --popover: 210 50% 96%;
-    --popover-foreground: 222 25% 20%;
+    --card: 220 20% 16%;
+    --card-foreground: 210 20% 96%;
+    --popover: 220 20% 16%;
+    --popover-foreground: 210 20% 96%;
     
     /* Brand colors */
     --primary: 210 100% 60%;
-    --primary-foreground: 210 50% 98%;
-    --secondary: 214 32% 95%;
-    --secondary-foreground: 222 25% 20%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 25% 20%;
+    --secondary-foreground: 210 20% 96%;
     --accent: 250 80% 67%;
-    --accent-foreground: 210 50% 98%;
+    --accent-foreground: 210 20% 98%;
     
     /* Functional colors */
-    --muted: 214 32% 95%;
-    --muted-foreground: 222 25% 45%;
+    --muted: 215 25% 20%;
+    --muted-foreground: 210 20% 70%;
     --destructive: 0 62.8% 60.6%;
-    --destructive-foreground: 210 50% 98%;
+    --destructive-foreground: 210 20% 98%;
     
     /* Border and control colors */
-    --border: 214 32% 90%;
-    --input: 214 32% 90%;
+    --border: 215 25% 25%;
+    --input: 215 25% 25%;
     --ring: 210 100% 60%;
   }
 }
@@ -78,9 +77,20 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .light body {
     background-image: radial-gradient(
       circle at 120% 90%,
       hsl(var(--accent) / 0.1) 0%,
+      transparent 70%
+    );
+  }
+
+  .dark body {
+    background-image: radial-gradient(
+      circle at 120% 90%,
+      hsl(var(--accent) / 0.15) 0%,
       transparent 70%
     );
   }
@@ -88,28 +98,53 @@
 
 @layer components {
   /* Card variations with frosted glass effect */
-  .card-frost-blue {
+  .light .card-frost-blue {
     @apply bg-blue-100/80 backdrop-blur-md border-blue-200/60;
   }
   
-  .card-frost-purple {
+  .light .card-frost-purple {
     @apply bg-purple-100/80 backdrop-blur-md border-purple-200/60;
   }
   
-  .card-frost-teal {
+  .light .card-frost-teal {
     @apply bg-teal-100/80 backdrop-blur-md border-teal-200/60;
   }
   
-  .card-frost-indigo {
+  .light .card-frost-indigo {
     @apply bg-indigo-100/80 backdrop-blur-md border-indigo-200/60;
   }
   
-  .card-frost-sky {
+  .light .card-frost-sky {
     @apply bg-sky-100/80 backdrop-blur-md border-sky-200/60;
   }
   
-  .card-frost-pink {
+  .light .card-frost-pink {
     @apply bg-pink-100/80 backdrop-blur-md border-pink-200/60;
+  }
+
+  /* Dark mode frost cards */
+  .dark .card-frost-blue {
+    @apply bg-blue-950/40 backdrop-blur-md border-blue-800/30;
+  }
+  
+  .dark .card-frost-purple {
+    @apply bg-purple-950/40 backdrop-blur-md border-purple-800/30;
+  }
+  
+  .dark .card-frost-teal {
+    @apply bg-teal-950/40 backdrop-blur-md border-teal-800/30;
+  }
+  
+  .dark .card-frost-indigo {
+    @apply bg-indigo-950/40 backdrop-blur-md border-indigo-800/30;
+  }
+  
+  .dark .card-frost-sky {
+    @apply bg-sky-950/40 backdrop-blur-md border-sky-800/30;
+  }
+  
+  .dark .card-frost-pink {
+    @apply bg-pink-950/40 backdrop-blur-md border-pink-800/30;
   }
 
   /* Card with hover lift effect */
@@ -119,7 +154,7 @@
 
   /* Input and button styling */
   .chat-input {
-    @apply w-full rounded-full px-6 py-3 bg-white/80 backdrop-blur-sm text-foreground 
+    @apply w-full rounded-full px-6 py-3 bg-white/80 dark:bg-background/50 backdrop-blur-sm text-foreground 
            focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 
            border border-transparent focus:border-primary/20 shadow-lg;
     transition: transform 0.2s ease;
@@ -132,7 +167,8 @@
   .tool-button {
     @apply rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 
            focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring 
-           hover:bg-white/80 hover:shadow-md hover:-translate-y-1;
+           hover:bg-white/80 hover:shadow-md hover:-translate-y-1
+           dark:hover:bg-secondary/80;
   }
 
   /* Logo styling */
@@ -184,7 +220,7 @@
   }
 
   .message-bubble-assistant {
-    @apply bg-white/90 backdrop-blur-sm text-foreground rounded-2xl rounded-tl-sm 
+    @apply bg-white/90 dark:bg-card/90 backdrop-blur-sm text-foreground rounded-2xl rounded-tl-sm 
            px-4 py-2 max-w-[80%] shadow-md border border-border transition-all duration-200;
     animation: slideInLeft 0.3s ease-out;
   }
@@ -218,6 +254,27 @@
     background-image: 
       radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.15) 0%, transparent 50%),
       radial-gradient(circle at 80% 70%, hsl(var(--primary) / 0.1) 0%, transparent 50%);
+  }
+
+  /* Theme toggle animation */
+  .theme-toggle-icon {
+    @apply transition-transform duration-500;
+  }
+
+  .light .theme-toggle-icon-sun {
+    @apply rotate-0 scale-100;
+  }
+
+  .light .theme-toggle-icon-moon {
+    @apply rotate-90 scale-0;
+  }
+
+  .dark .theme-toggle-icon-sun {
+    @apply rotate-90 scale-0;
+  }
+
+  .dark .theme-toggle-icon-moon {
+    @apply rotate-0 scale-100;
   }
 
   /* Animations */

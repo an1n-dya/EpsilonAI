@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect } from "react";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function ClientBody({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Enable light theme and remove any extension-added classes during hydration
+  // Remove any extension-added classes during hydration
   useEffect(() => {
     // This runs only on the client after hydration
-    document.documentElement.classList.add('dark'); // Apply the dark theme class but with light colors
     document.body.className = "antialiased";
   }, []);
 
   return (
-    <body className="antialiased dark:bg-background" suppressHydrationWarning>
-      {children}
-    </body>
+    <ThemeProvider defaultTheme="light">
+      <body className="antialiased bg-background" suppressHydrationWarning>
+        {children}
+      </body>
+    </ThemeProvider>
   );
 }
