@@ -66,14 +66,47 @@
 }
 
 @layer components {
-  /* Updated logo styling with more vibrant gradient */
+  /* Card variations with frosted glass effect */
+  .card-frost-blue {
+    @apply bg-blue-100/70 backdrop-blur-md border-blue-200/50;
+  }
+  
+  .card-frost-purple {
+    @apply bg-purple-100/70 backdrop-blur-md border-purple-200/50;
+  }
+  
+  .card-frost-teal {
+    @apply bg-teal-100/70 backdrop-blur-md border-teal-200/50;
+  }
+  
+  .card-frost-indigo {
+    @apply bg-indigo-100/70 backdrop-blur-md border-indigo-200/50;
+  }
+  
+  .card-frost-sky {
+    @apply bg-sky-100/70 backdrop-blur-md border-sky-200/50;
+  }
+  
+  .card-frost-pink {
+    @apply bg-pink-100/70 backdrop-blur-md border-pink-200/50;
+  }
+
+  .chat-input {
+    @apply w-full rounded-full px-6 py-3 bg-white/80 backdrop-blur-sm text-primary-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 border border-transparent focus:border-primary/20 shadow-lg;
+    transition: transform 0.2s ease;
+  }
+
+  .chat-input:focus {
+    transform: translateY(-2px);
+  }
+
+  .tool-button {
+    @apply rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-white/80 hover:shadow-md hover:-translate-y-1;
+  }
+
   .logo {
     @apply font-bold text-2xl relative;
     text-shadow: 0 0 30px hsl(var(--accent) / 0.3);
-    background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
   }
   
   .logo-container {
@@ -92,27 +125,118 @@
     z-index: -1;
   }
 
-  /* Epsilon symbol styling for better visibility */
-  .epsilon-symbol {
-    @apply text-white font-bold;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  /* Glow effect for card hover */
+  .glow-card {
+    @apply transition-all duration-300 hover:shadow-xl relative overflow-hidden;
+  }
+  
+  .glow-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, hsl(var(--accent) / 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .glow-card:hover::before {
+    opacity: 1;
   }
 
-  /* Light version of epsilon symbol for login/signup */
-  .epsilon-symbol-light {
-    @apply font-bold;
-    color: hsl(var(--accent-foreground));
-    text-shadow: 0 0 8px hsl(var(--accent) / 0.5);
+  /* Chat messages styling */
+  .message-bubble-user {
+    @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] ml-auto shadow-md border border-primary/20 transition-all duration-200;
+    animation: slideInRight 0.3s ease-out;
   }
 
-  /* Update chat input text color */
-  .chat-input {
-    @apply w-full rounded-full px-6 py-3 bg-muted text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all duration-200 border border-transparent focus:border-primary/20 shadow-lg;
-    transition: transform 0.2s ease;
-    color: hsl(var(--foreground)); /* Ensures text is visible */
+  .message-bubble-assistant {
+    @apply bg-white/80 backdrop-blur-sm text-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] shadow-md border border-border transition-all duration-200;
+    animation: slideInLeft 0.3s ease-out;
   }
 
-  .chat-input:focus {
-    transform: translateY(-2px);
+  /* Animations */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s infinite ease-in-out;
+  }
+
+  /* Hero section gradient */
+  .hero-gradient {
+    background-image: 
+      radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, hsl(var(--primary) / 0.1) 0%, transparent 50%);
+  }
+
+  /* Glowing button */
+  .glow-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .glow-button::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, hsl(var(--accent) / 0.4) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease-out;
+    z-index: -1;
+  }
+
+  .glow-button:hover::after {
+    transform: scale(1);
   }
 }

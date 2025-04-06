@@ -24,18 +24,18 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 w-full border-b transition-all duration-300 backdrop-blur-md",
         scrolled 
-          ? "border-border/50 bg-background/90 shadow-lg" 
-          : "border-transparent bg-background/50"
-      )}
-    >
+          ? "border-blue-100 bg-white/80 shadow-lg" 
+          : "border-transparent bg-white/50"
+        )}
+      >
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 logo-container">
             <div className="bg-black flex items-center justify-center rounded-lg w-8 h-8 overflow-hidden relative">
-              <span className="epsilon-symbol text-xl animate-pulse-slow">ε</span>
+              <span className="text-white font-bold text-xl animate-pulse-slow">ε</span>
               <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 opacity-60"></div>
             </div>
-            <span className="logo font-medium">Epsilon</span>
+            <span className="logo font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-accent">Epsilon</span>
           </Link>
         </div>
         
