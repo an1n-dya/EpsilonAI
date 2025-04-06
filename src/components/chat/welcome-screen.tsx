@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Search, Brain, BarChart2, Image, Code, MessageCircle, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BubbleAnimation } from "@/components/animations/bubble-animation";
 
 export function WelcomeScreen() {
   const [mounted, setMounted] = useState(false);
@@ -12,22 +13,19 @@ export function WelcomeScreen() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full space-y-8 text-center px-4">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-40">
-          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-blue-200/50 rounded-full filter blur-[100px] animate-pulse-slow"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-indigo-200/50 rounded-full filter blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }}></div>
-        </div>
-      </div>
-      
+    <div className="flex flex-col items-center justify-center h-full space-y-8 text-center px-4 relative">
+      {/* 3D animations */}
+      <BubbleAnimation count={10} speed={3} minSize={10} maxSize={50} />
+
       <div className={`transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
         <div className="mx-auto w-16 h-16 mb-6 relative">
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full animate-pulse-slow"></div>
-          <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">ε</div>
+          <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold animate-rotate3d">ε</div>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Epsilon</span>.</h1>
-        <p className="text-xl text-muted-foreground">How can I help you today?</p>
+        <div className="relative">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Epsilon</span>.</h1>
+          <p className="text-xl text-muted-foreground">How can I help you today?</p>
+        </div>
       </div>
 
       <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl w-full transform transition-all duration-700 delay-200 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
@@ -64,6 +62,7 @@ interface ToolButtonProps {
 
 function ToolButton({ icon, label, delay }: ToolButtonProps) {
   const [mounted, setMounted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   
   useEffect(() => {
     setMounted(true);
@@ -72,11 +71,17 @@ function ToolButton({ icon, label, delay }: ToolButtonProps) {
   return (
     <Button 
       variant="outline" 
-      className="tool-button flex flex-row items-center justify-center h-12 gap-2 border-blue-100/50 w-full bg-white/70 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700"
+      className="tool-button flex flex-row items-center justify-center h-12 gap-2 border-blue-100/50 w-full bg-white/70 backdrop-blur-sm relative overflow-hidden transform transition-all duration-700 card-3d"
       style={{ transitionDelay: `${delay}s` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <span className="text-accent">{icon}</span>
-      <span className="font-medium">{label}</span>
+      <div className="card-3d-content flex items-center gap-2">
+        <span className={`text-accent transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
+          {icon}
+        </span>
+        <span className="font-medium">{label}</span>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-accent/0 to-primary/0 hover:from-primary/10 hover:via-accent/10 hover:to-primary/10 transition-all duration-300"></div>
     </Button>
   );

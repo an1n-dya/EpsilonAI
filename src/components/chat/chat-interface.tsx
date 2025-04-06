@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChatInput } from "./chat-input";
 import { WelcomeScreen } from "./welcome-screen";
 import { MessageSquare, Bot } from "lucide-react";
+import { BubbleAnimation } from "@/components/animations/bubble-animation";
 
 type MessageRole = "user" | "assistant";
 
@@ -72,13 +73,20 @@ export function ChatInterface() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden relative">
-      {/* Background gradient */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-30">
-          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-blue-200/50 rounded-full filter blur-[100px]"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-indigo-200/50 rounded-full filter blur-[100px]"></div>
+      {/* Enhanced background elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-blue-200/30 rounded-full filter blur-[100px] animate-pulse-slow"></div>
+          <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[30%] bg-indigo-200/30 rounded-full filter blur-[100px] animate-pulse-slow" style={{ animationDelay: "1s" }}></div>
         </div>
       </div>
+      
+      {/* Add bubble animations only when there are messages */}
+      {messages.length > 0 && (
+        <>
+          <BubbleAnimation count={5} speed={2} minSize={5} maxSize={25} />
+        </>
+      )}
       
       <div className="flex-1 overflow-y-auto p-4 pb-0 scrollbar-thin scrollbar-thumb-accent/30 scrollbar-track-transparent">
         {messages.length === 0 ? (
@@ -93,7 +101,7 @@ export function ChatInterface() {
                 } mb-4`}
               >
                 {message.role === "assistant" && (
-                  <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center mr-2 shadow-lg">
+                  <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center mr-2 shadow-lg animate-pulse-slow">
                     <Bot size={16} className="text-accent" />
                   </div>
                 )}
@@ -101,8 +109,8 @@ export function ChatInterface() {
                 <div
                   className={
                     message.role === "user"
-                      ? "message-bubble-user"
-                      : "message-bubble-assistant"
+                      ? "message-bubble-user card-3d"
+                      : "message-bubble-assistant card-3d"
                   }
                 >
                   {message.role === "assistant" && index === messages.length - 1 && isLoading
@@ -115,7 +123,7 @@ export function ChatInterface() {
                 </div>
                 
                 {message.role === "user" && (
-                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center ml-2 shadow-lg">
+                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center ml-2 shadow-lg animate-pulse-slow">
                     <MessageSquare size={16} className="text-primary" />
                   </div>
                 )}
