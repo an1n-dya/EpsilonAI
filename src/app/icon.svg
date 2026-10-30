@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>Epsilon</title>
+  <defs>
+    <radialGradient id="core" cx="72%" cy="80%" r="95%">
+      <stop offset="0" stop-color="#ffc46b"/>
+      <stop offset=".32" stop-color="#ff6a3d"/>
+      <stop offset=".62" stop-color="#ff4f7b"/>
+      <stop offset="1" stop-color="#6a5cff"/>
+    </radialGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".6"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="30" height="30" rx="11" fill="url(#core)"/>
+  <path d="M6 5.5c2.4-2 6-2.9 10-2.9s7.6.9 10 2.9c-2.5 3.2-6 4.6-10 4.6S8.5 8.7 6 5.5z" fill="url(#gloss)"/>
+  <path d="M20.6 11.6a6.1 6.1 0 0 0-4.3-1.6c-2.9 0-4.9 1.5-4.9 3.6 0 1.8 1.6 2.9 3.9 2.9h1.6m-1.6 0c-2.6 0-4.4 1.4-4.4 3.4 0 2.2 2.2 3.6 5.2 3.6 1.9 0 3.5-.6 4.8-1.8" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

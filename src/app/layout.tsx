@@ -1,29 +1,65 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
+import { LiquidBackdrop } from "@/components/backdrop/liquid-backdrop";
+import { LightField } from "@/components/glass/light-field";
+import { Providers } from "@/components/providers";
 import "./globals.css";
-import ClientBody from "./ClientBody";
 
-const inter = Inter({
-  variable: "--font-inter",
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
+  variable: "--font-bricolage",
+  axes: ["opsz", "wdth"],
+  display: "swap",
+});
+
+const sans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
+});
+
+const mono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Epsilon | AI Assistant",
-  description: "Epsilon is a free AI assistant designed to maximize truth and objectivity",
-  icons: {
-    icon: "/favicon.svg",
+  title: {
+    default: "Epsilon — answers with a margin of error",
+    template: "%s · Epsilon",
+  },
+  description:
+    "Epsilon is an AI assistant that reasons in the open, cites as it goes and tells you how sure it is.",
+  applicationName: "Epsilon",
+  openGraph: {
+    title: "Epsilon — answers with a margin of error",
+    description:
+      "An AI assistant that reasons in the open, cites as it goes and tells you how sure it is.",
+    type: "website",
+    siteName: "Epsilon",
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#040508",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  // Let the on-screen keyboard resize the layout so the chat composer stays visible.
+  interactiveWidget: "resizes-content",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
-      <ClientBody>{children}</ClientBody>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <body>
+        <LiquidBackdrop />
+        <LightField />
+        <Providers>{children}</Providers>
+        <div className="grain" aria-hidden />
+      </body>
     </html>
   );
 }
