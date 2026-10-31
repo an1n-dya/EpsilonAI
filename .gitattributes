@@ -1,0 +1,2 @@
+# Check out with LF everywhere, whatever core.autocrlf says: Biome enforces LF.
+* text=auto eol=lf

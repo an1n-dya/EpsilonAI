@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Epsilon",
   },
+  // The site is already dark. Ask Dark Reader to leave it alone: its rewritten
+  // inline styles break hydration and flatten the glass.
+  other: { "darkreader-lock": "true" },
 };
 
 export const viewport: Viewport = {
