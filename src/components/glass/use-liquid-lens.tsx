@@ -59,19 +59,38 @@ function displacementMap(w: number, h: number, radius: number, bezel: number) {
   const hit = cache.get(key);
   if (hit) return hit;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return "";
-  const img = ctx.createImageData(w, h);
-  const data = img.data;
+  // The map is stored as an uncompressed 24-bit BMP behind a blob URL.
+  // Encoding a PNG took longer than computing the map, and a BMP is just a
+  // header in front of the pixels.
+  const stride = Math.ceil((w * 3) / 4) * 4;
+  const buffer = new ArrayBuffer(54 + stride * h);
+  const header = new DataView(buffer);
+  header.setUint16(0, 0x424d); // "BM"
+  header.setUint32(2, buffer.byteLength, true);
+  header.setUint32(10, 54, true);
+  header.setUint32(14, 40, true);
+  header.setInt32(18, w, true);
+  header.setInt32(22, -h, true); // negative height: rows run top to bottom
+  header.setUint16(26, 1, true);
+  header.setUint16(28, 24, true);
+  // Clamped like canvas ImageData, so values round exactly as they used to.
+  const pixels = new Uint8ClampedArray(buffer, 54);
+  // Mid-grey everywhere is "no displacement", which covers the whole face.
+  pixels.fill(128);
+  const put = (x: number, y: number, dx: number, dy: number) => {
+    const i = y * stride + x * 3; // BGR
+    pixels[i + 1] = 128 + dy * 127;
+    pixels[i + 2] = 128 + dx * 127;
+  };
+
   const r = Math.min(radius, w / 2, h / 2);
   const hw = w / 2;
   const hh = h / 2;
 
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
+  // The shape is symmetric about both axes, so work out the top-left
+  // quadrant and mirror it, flipping the displacement on the far sides.
+  for (let y = 0; y < Math.ceil(hh); y++) {
+    for (let x = 0; x < Math.ceil(hw); x++) {
       const px = x + 0.5 - hw;
       const py = y + 0.5 - hh;
       const qx = Math.abs(px) - (hw - r);
@@ -80,43 +99,45 @@ function displacementMap(w: number, h: number, radius: number, bezel: number) {
       const outside = Math.hypot(Math.max(qx, 0), Math.max(qy, 0));
       const dist = outside + Math.min(Math.max(qx, qy), 0) - r;
       const depth = -dist;
+      if (!(depth > 0 && depth < bezel)) continue;
 
-      let dx = 0;
-      let dy = 0;
-      if (depth > 0 && depth < bezel) {
-        let nx: number;
-        let ny: number;
-        if (qx > 0 && qy > 0) {
-          const l = Math.hypot(qx, qy) || 1;
-          nx = qx / l;
-          ny = qy / l;
-        } else if (qx > qy) {
-          nx = 1;
-          ny = 0;
-        } else {
-          nx = 0;
-          ny = 1;
-        }
-        nx *= Math.sign(px) || 1;
-        ny *= Math.sign(py) || 1;
-        // Convex profile: steep at the rim, flat where the bezel meets the face.
-        const t = depth / bezel;
-        const mag = (1 - t) ** 2.4;
-        dx = -nx * mag;
-        dy = -ny * mag;
+      let nx: number;
+      let ny: number;
+      if (qx > 0 && qy > 0) {
+        const l = Math.hypot(qx, qy) || 1;
+        nx = qx / l;
+        ny = qy / l;
+      } else if (qx > qy) {
+        nx = 1;
+        ny = 0;
+      } else {
+        nx = 0;
+        ny = 1;
       }
+      nx *= Math.sign(px) || 1;
+      ny *= Math.sign(py) || 1;
+      // Convex profile: steep at the rim, flat where the bezel meets the face.
+      const t = depth / bezel;
+      const mag = (1 - t) ** 2.4;
+      const dx = -nx * mag;
+      const dy = -ny * mag;
 
-      const i = (y * w + x) * 4;
-      data[i] = 128 + dx * 127;
-      data[i + 1] = 128 + dy * 127;
-      data[i + 2] = 128;
-      data[i + 3] = 255;
+      const mx = w - 1 - x;
+      const my = h - 1 - y;
+      put(x, y, dx, dy);
+      if (mx !== x) put(mx, y, -dx, dy);
+      if (my !== y) put(x, my, dx, -dy);
+      if (mx !== x && my !== y) put(mx, my, -dx, -dy);
     }
   }
 
-  ctx.putImageData(img, 0, 0);
-  const url = canvas.toDataURL("image/png");
-  if (cache.size > 32) cache.delete(cache.keys().next().value as string);
+  const url = URL.createObjectURL(new Blob([buffer], { type: "image/bmp" }));
+  if (cache.size >= 16) {
+    const [oldKey, oldUrl] = cache.entries().next().value as [string, string];
+    cache.delete(oldKey);
+    // Free it unless a lens on the page is still showing it.
+    if (!document.querySelector(`[href="${oldUrl}"]`)) URL.revokeObjectURL(oldUrl);
+  }
   cache.set(key, url);
   return url;
 }

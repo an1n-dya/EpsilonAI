@@ -43,7 +43,9 @@ export function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const active = LINKS.find((l) => l.href === pathname)?.href ?? null;
+  // The export uses trailing slashes ("/about/"), the links don't.
+  const route = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  const active = LINKS.find((l) => l.href === route)?.href ?? null;
   const lit = hovered ?? active;
 
   return (

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   type FormEvent,
   type KeyboardEvent,
+  memo,
   type RefObject,
   useEffect,
   useId,
@@ -16,7 +17,8 @@ import { cn } from "@/lib/utils";
 
 const MAX = 8000;
 
-export function Composer({
+// Memoised so a streaming answer doesn't re-render the composer on every chunk.
+export const Composer = memo(function Composer({
   onSend,
   onStop,
   busy,
@@ -99,6 +101,7 @@ export function Composer({
           />
           <button
             type="submit"
+            data-glass={busy || undefined}
             disabled={!busy && !canSend}
             aria-label={busy ? "Stop generating" : "Send message"}
             className={cn(
@@ -131,4 +134,4 @@ export function Composer({
       </div>
     </div>
   );
-}
+});

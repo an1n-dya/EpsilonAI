@@ -2,7 +2,7 @@
 
 import { ArrowDown, Menu, PanelLeft, SquarePen } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { LogoMark } from "@/components/brand/logo";
 import { replyTo, SUGGESTIONS } from "@/lib/chat/responses";
 import { playReply } from "@/lib/chat/simulate";
@@ -20,7 +20,7 @@ import { cn, uid } from "@/lib/utils";
 import { Composer } from "./composer";
 import { MessageView } from "./message";
 import { ModelPicker } from "./model-picker";
-import { Sidebar } from "./sidebar";
+import { type ConversationSummary, Sidebar } from "./sidebar";
 
 type Busy = { convId: string; msgId: string };
 
@@ -227,22 +227,33 @@ export function ChatApp() {
     requestAnimationFrame(() => inputRef.current?.focus());
   }, [stop]);
 
-  const select = (id: string) => {
-    if (id !== activeId) stop();
-    setActiveId(id);
-    setDrawer(false);
-  };
+  // Callbacks below stay stable while an answer streams, so the memoised
+  // sidebar, composer and model picker can skip those renders.
+  const select = useCallback(
+    (id: string) => {
+      if (id !== activeId) stop();
+      setActiveId(id);
+      setDrawer(false);
+    },
+    [activeId, stop],
+  );
 
-  const remove = (id: string) => {
-    if (busy?.convId === id) stop();
-    setConversations((cs) => cs.filter((c) => c.id !== id));
-    if (id === activeId) setActiveId(null);
-  };
+  const remove = useCallback(
+    (id: string) => {
+      if (busy?.convId === id) stop();
+      setConversations((cs) => cs.filter((c) => c.id !== id));
+      if (id === activeId) setActiveId(null);
+    },
+    [activeId, busy, stop],
+  );
 
-  const changeModel = (id: ModelId) => {
+  const changeModel = useCallback((id: ModelId) => {
     setModel(id);
     saveModel(id);
-  };
+  }, []);
+
+  const hidePanel = useCallback(() => setPanel(false), []);
+  const closeDrawer = useCallback(() => setDrawer(false), []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -296,10 +307,28 @@ export function ChatApp() {
 
   const lastAssistant = active?.messages.findLast((m) => m.role === "assistant")?.id;
 
+  const sendFromComposer = useCallback(
+    (text: string) => {
+      stick.current = true;
+      send(text);
+    },
+    [send],
+  );
+
+  // The sidebar shows titles and dates only. Streaming replaces the active
+  // conversation on every chunk, so derive a list that changes only when
+  // something it shows does.
+  const summaryKey = JSON.stringify(conversations.map((c) => [c.id, c.title, c.updatedAt]));
+  // biome-ignore lint/correctness/useExhaustiveDependencies: summaryKey covers every field used
+  const summaries = useMemo<ConversationSummary[]>(
+    () => conversations.map(({ id, title, updatedAt }) => ({ id, title, updatedAt })),
+    [summaryKey],
+  );
+
   /* Render --------------------------------------------------------------- */
 
   const sidebarProps = {
-    conversations,
+    conversations: summaries,
     activeId,
     busyId: busy?.convId ?? null,
     onSelect: select,
@@ -309,8 +338,11 @@ export function ChatApp() {
 
   return (
     <div className="flex h-[100dvh] gap-3 overflow-hidden md:p-3">
-      {/* Desktop panel */}
-      <AnimatePresence initial={false}>
+      {/* Desktop panel. With presenceAffectsLayout on (the default), AnimatePresence
+          hands its children a new context on every render, which would reach the
+          sidebar's rows through its memo and make them re-measure their layout on
+          every streamed chunk. Nothing here animates its layout, so turn it off. */}
+      <AnimatePresence initial={false} presenceAffectsLayout={false}>
         {panel && (
           <motion.aside
             key="panel"
@@ -321,14 +353,14 @@ export function ChatApp() {
             className="hidden shrink-0 overflow-hidden md:block"
           >
             <div data-glass className="glass glass-thick h-full w-[284px] rounded-[28px]">
-              <Sidebar {...sidebarProps} variant="panel" onClose={() => setPanel(false)} />
+              <Sidebar {...sidebarProps} variant="panel" onClose={hidePanel} />
             </div>
           </motion.aside>
         )}
       </AnimatePresence>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
+      {/* Mobile drawer (presenceAffectsLayout: see above) */}
+      <AnimatePresence presenceAffectsLayout={false}>
         {drawer && (
           <>
             <motion.div
@@ -360,7 +392,7 @@ export function ChatApp() {
               data-glass
               className="glass glass-thick fixed inset-y-2 left-2 z-50 w-[min(20rem,calc(100vw-3rem))] rounded-[28px] pt-[env(safe-area-inset-top)] md:hidden"
             >
-              <Sidebar {...sidebarProps} variant="drawer" onClose={() => setDrawer(false)} />
+              <Sidebar {...sidebarProps} variant="drawer" onClose={closeDrawer} />
             </motion.aside>
           </>
         )}
@@ -453,10 +485,7 @@ export function ChatApp() {
         </p>
 
         <Composer
-          onSend={(text) => {
-            stick.current = true;
-            send(text);
-          }}
+          onSend={sendFromComposer}
           onStop={stop}
           busy={busy !== null}
           inputRef={inputRef}

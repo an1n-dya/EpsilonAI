@@ -31,6 +31,7 @@
   --animate-shimmer: shimmer 2.4s linear infinite;
   --animate-caret: caret 1s steps(1) infinite;
   --animate-rise: rise 0.7s var(--ease-liquid) both;
+  --animate-float: float 7s ease-in-out infinite;
 
   @keyframes shimmer {
     from {
@@ -55,6 +56,13 @@
       opacity: 1;
       transform: none;
       filter: none;
+    }
+  }
+  /* Uses `translate`, not `transform`, so it composes with a Motion entrance
+     on the same element and stays on the compositor. */
+  @keyframes float {
+    50% {
+      translate: 0 -10px;
     }
   }
 }
@@ -197,6 +205,26 @@
   initial-value: rgb(255 255 255 / 0.025);
 }
 
+/* The light field rewrites these on every pointer move. If they inherited,
+   each write would restyle the surface's whole subtree (the chat panel holds
+   thousands of nodes), so they stop at the surface and only its rim and
+   sheen pseudo-elements pick them up. */
+@property --rim {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 135deg;
+}
+@property --mx {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 30%;
+}
+@property --my {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: -40%;
+}
+
 @layer components {
   .glass {
     --g-blur: 22px;
@@ -207,7 +235,6 @@
     --g-rim-lo: rgb(255 255 255 / 0.07);
     --g-rim-back: rgb(255 255 255 / 0.22);
     --g-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.75), 0 2px 8px -2px rgb(0 0 0 / 0.35);
-    --rim: 135deg;
 
     position: relative;
     isolation: isolate;
@@ -218,6 +245,13 @@
       inset 0 1px 0.5px rgb(255 255 255 / 0.09),
       inset 0 -10px 24px -18px rgb(255 255 255 / 0.1),
       var(--g-shadow);
+  }
+
+  .glass::before,
+  .glass::after {
+    --rim: inherit;
+    --mx: inherit;
+    --my: inherit;
   }
 
   .glass::before {
@@ -253,7 +287,7 @@
     border-radius: inherit;
     background:
       radial-gradient(
-        320px circle at var(--mx, 30%) var(--my, -40%),
+        320px circle at var(--mx) var(--my),
         rgb(255 255 255 / 0.075),
         transparent 65%
       ),

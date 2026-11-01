@@ -1,6 +1,10 @@
 "use client";
 
-import { LiquidGlass, type LiquidGlassHandle } from "liquid-glass-web-react";
+import {
+  LiquidGlass,
+  type LiquidGlassEngine,
+  type LiquidGlassHandle,
+} from "liquid-glass-web-react";
 import { animate, useReducedMotion } from "motion/react";
 import { type ReactNode, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
@@ -25,6 +29,47 @@ type Box = { x: number; y: number; w: number; h: number };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+type EngineInternals = {
+  regenerate?: () => void;
+  update?: () => void;
+  options?: object;
+  feImageEl?: Element | null;
+  mapUrl?: string;
+};
+
+const patched = new WeakSet<LiquidGlassEngine>();
+
+/**
+ * The engine encodes a new PNG displacement map whenever the lens changes
+ * size, and the stretch below changes it on every frame. A spring between two
+ * items always takes the same path, so keep the map for each size and reuse
+ * it. This leans on the engine's internals; if they ever change shape, it
+ * steps aside and the engine works as before.
+ */
+function reuseMaps(engine: LiquidGlassEngine) {
+  if (patched.has(engine)) return;
+  patched.add(engine);
+  const e = engine as unknown as EngineInternals;
+  const regenerate = e.regenerate?.bind(engine);
+  const update = e.update?.bind(engine);
+  if (!regenerate || !update || !e.options || !("feImageEl" in e) || !("mapUrl" in e)) return;
+  const maps = new Map<string, string>();
+  e.regenerate = () => {
+    const key = JSON.stringify(e.options);
+    const hit = maps.get(key);
+    if (hit) {
+      e.mapUrl = hit;
+      e.feImageEl?.setAttribute("href", hit);
+      update();
+      return;
+    }
+    regenerate();
+    if (!e.mapUrl) return;
+    if (maps.size >= 96) maps.delete(maps.keys().next().value as string);
+    maps.set(key, e.mapUrl);
+  };
+}
+
 export function LensRow({
   active,
   children,
@@ -47,6 +92,7 @@ export function LensRow({
     const root = glass.current?.element;
     const engine = glass.current?.engine;
     if (!root || !engine) return;
+    reuseMaps(engine);
     let stop: (() => void) | undefined;
 
     const apply = (b: Box) => {

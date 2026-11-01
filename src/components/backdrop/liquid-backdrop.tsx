@@ -76,7 +76,10 @@ vec3 silk(float d, float halfWidth, float fold, vec3 tint) {
   float x = d / halfWidth;
   float body = smoothstep(1.0, 0.55, abs(x));
   float shade = 0.18 + 0.82 * pow(0.5 + 0.5 * sin(fold + x * 1.7), 2.2);
-  float rim = exp(-pow((abs(x) - 0.86) * 9.0, 2.0)) * 0.9;
+  // Squared by hand: pow() is undefined for a negative base, and some
+  // mobile GPUs return NaN for it.
+  float r = (abs(x) - 0.86) * 9.0;
+  float rim = exp(-r * r) * 0.9;
   float halo = exp(-x * x * 0.22) * 0.11;
   return tint * (body * shade + rim * (0.35 + 0.65 * shade) + halo);
 }
@@ -239,7 +242,10 @@ export function LiquidBackdrop({ className }: { className?: string }) {
     const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
       const dt = now - last;
-      if (dt < 1000 / live.fps) return;
+      // A millisecond of slack: when the cap divides the refresh rate exactly
+      // (45 fps at 90 Hz, 24 fps at 120 Hz) a strict test flips between
+      // drawing every n-th and every n+1-th frame, and the motion judders.
+      if (dt < 1000 / live.fps - 1) return;
       last = now;
       // Clamp so a long pause (hidden tab) doesn't jump the flow.
       draw(Math.min(dt, 100));
@@ -261,9 +267,11 @@ export function LiquidBackdrop({ className }: { className?: string }) {
       else start();
     };
 
+    // Resizing clears the canvas, so repaint straight away rather than show a
+    // blank frame until the loop's next turn.
     const ro = new ResizeObserver(() => {
       resize();
-      if (reduceMotion) draw(0);
+      draw(0);
     });
     ro.observe(canvas);
     resize();
@@ -287,7 +295,12 @@ export function LiquidBackdrop({ className }: { className?: string }) {
   }, []);
 
   return (
-    <div aria-hidden className={cn("pointer-events-none fixed inset-0 -z-10", className)}>
+    // Sized to the large viewport, so a phone's toolbar sliding in and out
+    // doesn't resize (and reallocate) the canvas mid-scroll.
+    <div
+      aria-hidden
+      className={cn("pointer-events-none fixed inset-x-0 top-0 -z-10 h-lvh", className)}
+    >
       <canvas
         ref={canvasRef}
         className="h-full w-full opacity-0 transition-opacity duration-[1200ms] data-[ready=true]:opacity-100"

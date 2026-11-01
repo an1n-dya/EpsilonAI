@@ -3,14 +3,17 @@
 import { PanelLeftClose, Search, SquarePen, Trash2, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Wordmark } from "@/components/brand/logo";
 import type { Conversation } from "@/lib/chat/types";
 import { cn } from "@/lib/utils";
 
-type Group = { label: string; items: Conversation[] };
+/** All the sidebar shows of a conversation. */
+export type ConversationSummary = Pick<Conversation, "id" | "title" | "updatedAt">;
 
-function groupByDate(conversations: Conversation[]): Group[] {
+type Group = { label: string; items: ConversationSummary[] };
+
+function groupByDate(conversations: ConversationSummary[]): Group[] {
   const startOfToday = new Date().setHours(0, 0, 0, 0);
   const day = 86_400_000;
   const buckets: Group[] = [
@@ -28,7 +31,9 @@ function groupByDate(conversations: Conversation[]): Group[] {
   return buckets.filter((b) => b.items.length > 0);
 }
 
-export function Sidebar({
+// Memoised: the chat re-renders on every streamed chunk, and the list's rows
+// carry layout animations that would measure themselves each time.
+export const Sidebar = memo(function Sidebar({
   conversations,
   activeId,
   busyId,
@@ -38,7 +43,7 @@ export function Sidebar({
   onClose,
   variant,
 }: {
-  conversations: Conversation[];
+  conversations: ConversationSummary[];
   activeId: string | null;
   busyId: string | null;
   onSelect: (id: string) => void;
@@ -201,4 +206,4 @@ export function Sidebar({
       </div>
     </div>
   );
-}
+});

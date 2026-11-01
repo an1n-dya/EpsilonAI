@@ -2,11 +2,11 @@
 
 import { Check, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useId, useRef, useState } from "react";
+import { memo, useEffect, useId, useRef, useState } from "react";
 import { MODELS, type ModelId } from "@/lib/models";
 import { cn } from "@/lib/utils";
 
-export function ModelPicker({
+export const ModelPicker = memo(function ModelPicker({
   value,
   onChange,
 }: {
@@ -124,4 +124,4 @@ export function ModelPicker({
       </AnimatePresence>
     </div>
   );
-}
+});

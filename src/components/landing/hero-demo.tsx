@@ -1,8 +1,8 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { LogoMark } from "@/components/brand/logo";
 import { Confidence, confidenceTone } from "@/components/chat/confidence";
 
@@ -46,8 +46,13 @@ export function HeroDemo() {
   const [shown, setShown] = useState(0);
   const ex = EXCHANGES[index] as Exchange;
   const words = ex.a.split(" ");
+  const ref = useRef<HTMLDivElement>(null);
+  // Typing re-renders every 55ms, so hold the loop while it's scrolled out of
+  // view. It carries on from the same place when it's back.
+  const visible = useInView(ref);
 
   useEffect(() => {
+    if (!visible) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let timer: number;
     if (phase === "asking") {
@@ -72,7 +77,7 @@ export function HeroDemo() {
       window.clearTimeout(timer);
       window.clearInterval(timer);
     };
-  }, [phase, words.length]);
+  }, [phase, words.length, visible]);
 
   useEffect(() => {
     if (phase === "answering" && shown >= words.length) setPhase("done");
@@ -81,7 +86,7 @@ export function HeroDemo() {
   const tone = confidenceTone(ex.confidence);
 
   return (
-    <div className="flex h-full flex-col">
+    <div ref={ref} className="flex h-full flex-col">
       <div className="flex items-center justify-between border-hairline border-b px-5 py-3.5">
         <span className="eyebrow !text-[10.5px]">Live preview</span>
         <AnimatePresence mode="wait">

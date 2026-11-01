@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { memo, type ReactNode, useState } from "react";
 import type { Source } from "@/lib/chat/types";
 import { cn, safeHref } from "@/lib/utils";
 
@@ -280,64 +280,75 @@ export function Markdown({
   const blocks = parseBlocks(text);
   return (
     <div className={cn("prose-eps", className)}>
-      {blocks.map((b, i) => {
-        const key = `${b.type}${i}`;
-        switch (b.type) {
-          case "code":
-            return <CodeBlock key={key} code={b.code} lang={b.lang} />;
-          case "heading":
-            return b.level === 2 ? (
-              <h2 key={key}>{renderInline(b.text, sources)}</h2>
-            ) : (
-              <h3 key={key}>{renderInline(b.text, sources)}</h3>
-            );
-          case "list": {
-            const Tag = b.ordered ? "ol" : "ul";
-            return (
-              <Tag key={key}>
-                {b.items.map((item, j) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: items are positional
-                  <li key={j}>{renderInline(item, sources, `${j}-`)}</li>
-                ))}
-              </Tag>
-            );
-          }
-          case "table":
-            return (
-              <div key={key} className="overflow-x-auto">
-                <table>
-                  <thead>
-                    <tr>
-                      {b.header.map((h, j) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
-                        <th key={j}>{renderInline(h, sources)}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {b.rows.map((row, r) => (
-                      // biome-ignore lint/suspicious/noArrayIndexKey: rows are positional
-                      <tr key={r}>
-                        {row.map((cell, j) => (
-                          // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
-                          <td key={j} className={j === 0 ? "text-ink-3" : undefined}>
-                            {renderInline(cell, sources)}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            );
-          case "quote":
-            return <blockquote key={key}>{renderInline(b.text, sources)}</blockquote>;
-          case "hr":
-            return <hr key={key} />;
-          default:
-            return <p key={key}>{renderInline(b.text, sources)}</p>;
-        }
-      })}
+      {blocks.map((b, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: blocks are positional
+        <BlockView key={`${b.type}${i}`} block={b} sources={sources} />
+      ))}
     </div>
   );
 }
+
+// A streaming answer re-renders on every chunk, but only its last block is
+// still changing. The rest compare equal and skip rendering altogether.
+const BlockView = memo(
+  function BlockView({ block: b, sources }: { block: Block; sources: Source[] }) {
+    switch (b.type) {
+      case "code":
+        return <CodeBlock code={b.code} lang={b.lang} />;
+      case "heading":
+        return b.level === 2 ? (
+          <h2>{renderInline(b.text, sources)}</h2>
+        ) : (
+          <h3>{renderInline(b.text, sources)}</h3>
+        );
+      case "list": {
+        const Tag = b.ordered ? "ol" : "ul";
+        return (
+          <Tag>
+            {b.items.map((item, j) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: items are positional
+              <li key={j}>{renderInline(item, sources, `${j}-`)}</li>
+            ))}
+          </Tag>
+        );
+      }
+      case "table":
+        return (
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  {b.header.map((h, j) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
+                    <th key={j}>{renderInline(h, sources)}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {b.rows.map((row, r) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: rows are positional
+                  <tr key={r}>
+                    {row.map((cell, j) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
+                      <td key={j} className={j === 0 ? "text-ink-3" : undefined}>
+                        {renderInline(cell, sources)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      case "quote":
+        return <blockquote>{renderInline(b.text, sources)}</blockquote>;
+      case "hr":
+        return <hr />;
+      default:
+        return <p>{renderInline(b.text, sources)}</p>;
+    }
+  },
+  (prev, next) =>
+    (prev.sources === next.sources || (!prev.sources.length && !next.sources.length)) &&
+    JSON.stringify(prev.block) === JSON.stringify(next.block),
+);

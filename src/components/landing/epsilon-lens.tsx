@@ -15,18 +15,19 @@ export function EpsilonLens() {
   });
 
   return (
+    // The endless bob is a CSS animation so it runs on the compositor rather
+    // than costing a main-thread frame for as long as the page is open.
     <motion.div
       ref={lens.ref}
       data-glass
       aria-hidden
       initial={{ opacity: 0, scale: 0.7 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{
         opacity: { duration: 0.6 },
         scale: { type: "spring", stiffness: 120, damping: 14 },
-        y: { duration: 7, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
       }}
-      className="glass glass-clear relative grid size-64 place-items-center rounded-full sm:size-72"
+      className="glass glass-clear relative grid size-64 animate-float place-items-center rounded-full sm:size-72"
     >
       {lens.filter}
       <span className="display spectrum-text translate-y-[-4%] text-[11rem] leading-none sm:text-[12.5rem]">
